@@ -58,7 +58,7 @@ d1=361, d2=7, d3=283, d4=235, d5=183, d6=162, d7=166,
 
 e1=4427, e2=3670, e3=51, e4=149, e5=55, e6=141, e7=11, e8=26,
 
-f1=58, f2=64, f3=304, f4=203, f5=117, f6=259, f7=296, f8=97, f9=16,
+f1=58, f2=64, f3=304, f4=203, f5=0, f6=117, f7=259, f8=296, f9=97, f10=16,
 
 g1=3988, g2=5169, g3=12219, g4=13, g5=120, g6=36, g7=13,
 
@@ -82,6 +82,7 @@ TUNE(SetRange(1, 2*c7), c7);
 TUNE(SetRange(1, 2*c11), c11);
 TUNE(SetRange(1, 2*e2), e2);
 
+TUNE(SetRange(0, 200), f5);
 TUNE(SetRange(6400, 24000), g3);
 
 namespace TB = Tablebases;
@@ -1098,13 +1099,13 @@ moves_loop:  // When in check, search starts here
 
                 if (value < singularBeta)
                 {
-                    int doubleMargin = f3 * PvNode - f4 * !ttCapture;
-                    int tripleMargin = f5 + f6 * PvNode - f7 * !ttCapture + f8 * ss->ttPv;
+                    int doubleMargin = f3 * PvNode - f4 * !ttCapture + f5 * !PvNode;
+                    int tripleMargin = f6 + f7 * PvNode - f8 * !ttCapture + f9 * ss->ttPv;
 
                     extension = 1 + (value < singularBeta - doubleMargin)
                               + (value < singularBeta - tripleMargin);
 
-                    depth += ((!PvNode) && (depth < f9));
+                    depth += ((!PvNode) && (depth < f10));
                 }
 
                 // Multi-cut pruning
